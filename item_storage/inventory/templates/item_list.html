@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Items List</title>
+    
+    <!-- Bootstrap Cdn -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .card {
+            background-color: #808080; 
+            color: #f8f9fa; 
+            
+        }
+        .container {
+            background-color: #343a40; 
+            color: #f8f9fa; 
+            height:600px;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .pagination .page-link {
+            color: #17a2b8;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        .btn{
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+
+        }
+        
+
+       
+        
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5 d-flex flex-column ">
+        <h1 class="text-center mt-3">Ice Cream List</h1>
+
+        <!-- Sorting data from Models -->
+        <div class="text-center mb-4 mt-2">
+            <label> Sort By &nbsp</labels>
+            <a href="?sort=name" class="btn btn-sm">Name</a>
+            <a href="?sort=price" class="btn btn-sm">Price</a>
+            <a href="?sort=created_at" class="btn btn-sm">Created At</a>
+        </div>
+
+
+
+        <!-- List of items present in Models -->
+        <div class="row justify-content-center d-flex flex-wrap">
+            {% for item in page_obj %}
+                <div class="col-md-6 mb-3 d-flex ">
+                    <div class="card h-100 w-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.name }}</h5>
+                            <p class="card-text"><strong>Description:</strong> {{ item.description }}</p>
+                            <p class="card-text"><strong>Price:</strong> Rs {{ item.price }}</p>
+                            <p class="card-text"><strong>Created At:</strong> {{ item.created_at }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+
+
+        <!-- links for pagination-->
+        <nav aria-label="Page navigation"  class="mt-auto mb-2">
+            <ul class="pagination justify-content-center ">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}&sort={{ sort_by }}">Previous</a>
+                    </li>
+                {% endif %}
+
+                {% for page_num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
+                        <a class="page-link" href="?page={{ page_num }}&sort={{ sort_by }}">{{ page_num }}</a>
+                    </li>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}&sort={{ sort_by }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
